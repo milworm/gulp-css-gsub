@@ -1,0 +1,10 @@
+.d-user-profile {
+    height: 100px;
+    width: 100px;
+}
+
+.d-user-profile-inner {
+    height: 50px;
+    padding: 10px;
+    background: gold;
+}
