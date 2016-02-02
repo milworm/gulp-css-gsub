@@ -1,0 +1,23 @@
+{
+  "name": "parsers_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-rename": "^1.2.2"
+  },
+  "dependencies": {
+    "gulp-sass": "^2.1.1",
+    "gulp-watch": "^4.3.5",
+    "through2": "^2.0.0"
+  }
+}

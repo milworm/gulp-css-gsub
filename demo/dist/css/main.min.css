@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.a0 {
+  padding: 20px;
+}
+
+.container {
+  padding-top: 80px;
+}
+
+.a2 {
+  height: 230px;
+}
+
+.a4 {
+  padding-bottom: 40px !important;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.a5 {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.a1 {
+  margin-bottom: 24px;
+}
+
+.a3 {
+  padding: 20px;
+}

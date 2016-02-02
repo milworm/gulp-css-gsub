@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body, .container {
+    width: 100%;
+    height: 100%;
+}
+
+.d-root {
+    padding: 20px;
+}
+
+.container {
+    padding-top: 80px;
+}
+
+.d-avatar {
+    height: 230px;
+}
+
+.d-title {
+    padding-bottom: 40px !important;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.d-buttons {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.d-side-bar {
+    margin-bottom: 24px;
+}
+
+.d-description {
+    padding: 20px;
+}

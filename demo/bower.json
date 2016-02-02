@@ -1,0 +1,21 @@
+{
+  "name": "parsers_project",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "milworm <ruslan.prytula@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Materialize": "materialize#~0.97.5"
+  }
+}

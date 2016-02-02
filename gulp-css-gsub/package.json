@@ -1,0 +1,24 @@
+{
+  "name": "gulp-css-gsub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css": "^2.2.1",
+    "escodegen": "^1.8.0",
+    "esprima": "^2.7.1",
+    "estraverse": "^4.1.1",
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.0",
+    "underscore.string": "^3.2.3"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "vinyl": "^1.1.1"
+  }
+}
