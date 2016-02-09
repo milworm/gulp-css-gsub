@@ -84,12 +84,17 @@ describe("plugin functions", function() {
                         var baseCls = node.value.value,
                             innerCls = baseCls + "-inner";
 
+                        if(! this.replacements[baseCls]) {
+                            this.replacements[baseCls] = this.key;
+                            this.key = this.succ(this.key);
+                            this.replacedCount ++;
+                        }
+
                         if(! this.replacements[innerCls]) {
                             this.replacements[innerCls] = this.key;
                             this.key = this.succ(this.key);
+                            this.replacedCount ++;
                         }
-
-                        this.replacedCount ++;
                     } while(false);
                 }
             });
@@ -99,7 +104,7 @@ describe("plugin functions", function() {
             css = replacer.generateCss();
             js = replacer.generateJs();
 
-            assert.equal(2, replacer.getReplacedCount());
+            assert.equal(6, replacer.getReplacedCount());
         });
     });
 
