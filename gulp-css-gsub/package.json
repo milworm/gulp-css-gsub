@@ -2,7 +2,7 @@
   "name": "gulp-css-gsub",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "/lib/main.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
@@ -18,7 +18,16 @@
     "underscore.string": "^3.2.3"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.5.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-watch": "^4.3.5",
     "mocha": "^2.4.5",
     "vinyl": "^1.1.1"
-  }
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "lib/main.js"
+  ]
 }

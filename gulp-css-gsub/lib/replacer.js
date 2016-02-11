@@ -1,147 +1,303 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var esprima = require("esprima"),
     css = require("css"),
     estraverse = require("estraverse"),
     escodegen = require("escodegen"),
-    fs = require("fs"),
-    succ = require("underscore.string/succ");
+    fs = require("fs");
 
-function Replacer(config) {
-    config.prefix = config.prefix || "d";
-    config.plugin = config.plugin || this.emptyFn;
+var Replacer = function () {
 
-    this.replacedCount = 0;
-    this.replacements = {};
-    this.key = "a0";
-    this.config = config;
-}
+    /**
+     * @param {Object} config
+     * @param {String} config.prefix Used when css classes look like "{prefix}-profile"
+     * @param {RegExp} config.regexp Used when css classes use non-prefix declaration format.
+     * @param {Function} config.replace Function that will be called for each node from JS-AST, Here you can write your 
+     *                                  own logic to replace css-classes, that can't be replaced with prefix/regexp.
+     * @param {Boolean} replaceAll Should be true to rename all css classes including those classes that couldn't be 
+     *                             found in js-file.
+     */
 
-Replacer.prototype = {
-    emptyFn: function() {},
-    succ: function(key) {
-        return succ(key);
-    },
+    function Replacer(config) {
+        _classCallCheck(this, Replacer);
 
-    run: function() {
-        this.openFiles();
-        this.initFilesAst();
-        this.parseCssRules();
-        this.replace();
-    },
+        this.config = Object.assign({
+            re: null,
+            prefix: "d-",
+            replace: this.emptyFn,
+            replaceAll: false
+        }, config);
 
-    openFiles: function() {
-        this.cssText = fs.readFileSync(this.config.cssIn, "utf8");
-        this.jsText = fs.readFileSync(this.config.jsIn, "utf8");
-    },
-
-    initFilesAst: function() {
-        this.cssAst = css.parse(this.cssText);
-        this.jsAst = esprima.parse(this.jsText, {
-            attachComment: true
-        });
-    },
-
-    parseCssRules: function() {
-        this.re = new RegExp("\\.[" + this.config.prefix + "]{1}\\-[0-9a-zA-Z\\-_]+", "g");
-        this.rules = this.cssAst.stylesheet.rules;
-
-        var classes = [];
-
-        for(var i=0, rule; rule=this.rules[i]; i++) {
-            if(rule.type != "rule")
-                continue;
-
-            var selectors = rule.selectors.join(" ").match(this.re);
-
-            if(selectors)
-                classes = classes.concat(selectors.join(" ").replace(/\./g, "").split(" "));
-        }
-
-        this.classes = classes.sort(function(a, b) {
-            return b.length - a.length;
-        }).filter(function(cls, pos) {
-            return classes.indexOf(cls) == pos;
-        });
-    },
-
-    replace: function() {
-        estraverse.traverse(this.jsAst, {
-            enter: function(node, parent) {
-                this.config.plugin.call(this, node, parent);
-
-                if(node.type != "Literal")
-                    return ;
-
-                if(typeof node.value != "string")
-                    return ;
-
-                this.replaceItem(node);
-            }.bind(this)
-        });
-
-        return this;
-    },
-
-    replaceItem: function(node) {
-        var rules = this.rules,
-            classes = this.classes,
-            value = node.value,
-            key = this.key,
-            matches = value.match(new RegExp("[" + this.config.prefix + "]{1}\\-[0-9a-zA-Z\\-_]+", "g"));
-
-        if(! matches)
-            return ;
-
-        for(var i=0, match; match=matches[i]; i++) {
-            if(! this.replacements[match]) {
-                this.replacements[match] = key;
-                key = this.succ(key);
-            }
-
-            value = value.replace(match, this.replacements[match]);
-            this.replacedCount ++;
-        }
-
-        node.value = value;
-        this.key = this.succ(key);
-    },
-
-    generateCss: function() {
-        var replacements = this.replacements,
-            prefix = this.config.prefix;
-
-        for(var i=0, rule; rule=this.rules[i]; i++) {
-            if(rule.type != "rule")
-                continue;
-
-            var newSelectors = [];
-
-            for(var j=0, selector; selector=rule.selectors[j]; j++) {
-                selector = selector.replace(new RegExp("\\.([" + prefix + "]{1}\\-[0-9a-zA-Z\\-_]+)", "g"), function(a, b) {
-                    return "." + replacements[b];
-                });
-
-                if(/undefined/.test(selector))
-                    console.log("undefined in " + selector + " === " + rule.selectors.join(" "))
-                else
-                    newSelectors.push(selector);
-            }
-
-            if(newSelectors.length == rule.selectors.length) 
-                rule.selectors = newSelectors;
-            else
-                rule.selectors = []; // remove rule, because of unused selector.
-        }
-
-        return css.stringify(this.cssAst);
-    },
-
-    generateJs: function() {
-        return escodegen.generate(this.jsAst);
-    },
-
-    getReplacedCount: function() {
-        return this.replacedCount;
+        this.key = "a0";
+        this.replacements = {
+            count: 0,
+            items: {}
+        };
     }
-}
 
-module.exports = Replacer;
+    /**
+     * a reusable empty function
+     */
+
+
+    _createClass(Replacer, [{
+        key: "emptyFn",
+        value: function emptyFn() {}
+
+        /**
+         * @param {String}
+         * @return {String}
+         */
+
+    }, {
+        key: "succ",
+        value: function succ(input) {
+            var alphabet = 'abcdefghijklmnopqrstuvwxyz',
+                length = alphabet.length,
+                result = input,
+                i = input.length,
+                index;
+
+            while (i >= 0) {
+                var last = input.charAt(--i),
+                    next = '',
+                    carry = false;
+
+                if (isNaN(last)) {
+                    index = alphabet.indexOf(last.toLowerCase());
+
+                    if (index === -1) {
+                        next = last;
+                        carry = true;
+                    } else {
+                        var isUpperCase = last === last.toUpperCase();
+                        next = alphabet.charAt((index + 1) % length);
+                        if (isUpperCase) {
+                            next = next.toUpperCase();
+                        }
+
+                        carry = index + 1 >= length;
+                        if (carry && i === 0) {
+                            var added = isUpperCase ? 'A' : 'a';
+                            result = added + next + result.slice(1);
+                            break;
+                        }
+                    }
+                } else {
+                    next = +last + 1;
+                    if (next > 9) {
+                        next = 0;
+                        carry = true;
+                    }
+
+                    if (carry && i === 0) {
+                        result = '1' + next + result.slice(1);
+                        break;
+                    }
+                }
+
+                result = result.slice(0, i) + next + result.slice(i + 1);
+                if (!carry) {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /**
+         * an entry point.
+         */
+
+    }, {
+        key: "run",
+        value: function run() {
+            this.openFiles();
+            this.initFilesAst();
+            this.parseCssRules();
+            this.replace();
+        }
+
+        /**
+         * simply reads the content of css and js file.
+         */
+
+    }, {
+        key: "openFiles",
+        value: function openFiles() {
+            this.cssText = fs.readFileSync(this.config.cssIn, "utf8");
+            this.jsText = fs.readFileSync(this.config.jsIn, "utf8");
+        }
+
+        /**
+         * initializes AST for both css and js.
+         */
+
+    }, {
+        key: "initFilesAst",
+        value: function initFilesAst() {
+            this.cssAst = css.parse(this.cssText);
+            this.jsAst = esprima.parse(this.jsText);
+        }
+
+        /**
+         * starts parsing css file and extracts all css classes in required order.
+         */
+
+    }, {
+        key: "parseCssRules",
+        value: function parseCssRules() {
+            var config = this.config,
+                classes = [];
+
+            if (config.prefix) this.re = new RegExp("\\.(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");else this.re = config.re;
+
+            this.rules = this.cssAst.stylesheet.rules;
+
+            for (var i = 0, rule; rule = this.rules[i]; i++) {
+                if (rule.type != "rule") continue;
+
+                var selectors = rule.selectors.join(" ").match(this.re);
+
+                if (selectors) classes = classes.concat(selectors.join(" ").replace(/\./g, "").split(" "));
+            }
+
+            this.classes = classes.sort(function (a, b) {
+                return b.length - a.length;
+            }).filter(function (cls, pos) {
+                return classes.indexOf(cls) == pos;
+            });
+        }
+    }, {
+        key: "replace",
+        value: function replace() {
+            var _this = this;
+
+            estraverse.traverse(this.jsAst, {
+                enter: function (node, parent) {
+                    this.config.replace.call(this, node, parent);
+
+                    if (node.type != "Literal") return;
+
+                    if (typeof node.value != "string") return;
+
+                    this.replaceItem(node);
+                }.bind(this)
+            });
+
+            if (!this.config.replaceAll) return this;
+
+            var replacements = this.replacements,
+                key = this.key;
+
+            this.classes.forEach(function (cls) {
+                if (!replacements.items[cls]) {
+                    replacements.items[cls] = key;
+                    key = _this.succ(key);
+                    replacements.count++;
+                }
+            });
+
+            return this;
+        }
+    }, {
+        key: "replaceItem",
+        value: function replaceItem(node) {
+            var value = node.value,
+                key = this.key,
+                config = this.config,
+                replacements = this.replacements,
+                re;
+
+            if (config.prefix) re = new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");else re = config.re;
+
+            var matches = value.match(re);
+
+            if (!matches) return;
+
+            for (var i = 0, match; match = matches[i]; i++) {
+                if (!replacements.items[match]) {
+                    replacements.items[match] = key;
+                    key = this.succ(key);
+                }
+
+                value = value.replace(match, replacements.items[match]);
+                replacements.count++;
+            }
+
+            node.value = value;
+            this.key = key;
+        }
+
+        /**
+         * @returns {String} a resulting CSS code with replacements based on CSS AST.
+         */
+
+    }, {
+        key: "generateCss",
+        value: function generateCss() {
+            var replacements = this.replacements,
+                re = this.getCssItemRegExp();
+
+            for (var i = 0, rule; rule = this.rules[i]; i++) {
+                if (rule.type != "rule") continue;
+
+                var newSelectors = [];
+
+                for (var j = 0, selector; selector = rule.selectors[j]; j++) {
+                    selector = selector.replace(re, function (a, b) {
+                        return "." + replacements.items[b];
+                    });
+
+                    if (/undefined/.test(selector)) ; //console.log("undefined in " + selector + " === " + rule.selectors.join(" "))
+                    else newSelectors.push(selector);
+                }
+
+                if (newSelectors.length == rule.selectors.length) rule.selectors = newSelectors;else rule.selectors = []; // remove rule, because of unused selector.
+            }
+
+            return css.stringify(this.cssAst);
+        }
+    }, {
+        key: "getCssItemRegExp",
+        value: function getCssItemRegExp() {
+            var config = this.config;
+
+            if (config.re) return config.re;
+
+            return new RegExp("\\.((?:" + config.prefix + "){1}[0-9a-zA-Z\\-_]+)", "g");
+        }
+
+        /**
+         * @returns {String} a resulting JS code with replacements based on JS AST.
+         */
+
+    }, {
+        key: "generateJs",
+        value: function generateJs() {
+            return escodegen.generate(this.jsAst);
+        }
+
+        /**
+         * @return {Number} number of replacments.
+         */
+
+    }, {
+        key: "getReplacementsCount",
+        value: function getReplacementsCount() {
+            return this.replacements.count;
+        }
+    }]);
+
+    return Replacer;
+}();
+
+exports.default = Replacer;

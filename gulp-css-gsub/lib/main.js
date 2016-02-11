@@ -1,13 +1,17 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var through = require("through2"),
     gutil = require("gulp-util"),
-    Replacer = require("./lib/replacer.js"),
+    Replacer = require("./replacer.js"),
     File = require("vinyl"),
     fs = require("fs");
 
-module.exports = function(config) {
-    return through.obj(function(file, encoding, callback) {
-        var replacer,
-            file;
+exports.default = function (config) {
+    return through.obj(function (file, encoding, callback) {
+        var replacer, file;
 
         replacer = new Replacer({
             cssIn: file.path,
@@ -16,7 +20,7 @@ module.exports = function(config) {
         });
 
         replacer.run();
-        
+
         var cssText = replacer.generateCss(),
             jsText = replacer.generateJs();
 
