@@ -1,6 +1,6 @@
 # A gulp module to minify CSS class names.
 
-![Demo](http://milworm.github.io/gulp-css-gsub/demo/demo.gif)
+![Demo](http://milworm.github.io/gulp-css-gsub/demo.gif)
 
 
 [![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5/gulp-css-gsub)](https://supporter.60devs.com/support/399936c021d5111d90001de85283a4b5/gulp-css-gsub)
