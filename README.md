@@ -10,7 +10,21 @@ Gulp-css-gsub is a gulp module that rewrites your js and css files in order to r
     npm install gulp-css-gsub --save-dev
 
 ## Usage
-![Example](./example.gif)
+```javascript
+const gulp = require("gulp");
+const cssGsub = require("gulp-css-gsub");
+
+gulp.task("css-gsub", () => {
+    return gulp.src("./dist/css/main.css")
+            .pipe(cssGsub({ 
+                jsIn: "./dist/js/app.js", 
+                jsOut: "./dist/js/app.min.js",
+                prefix: "d"
+            }))
+            .pipe(rename("main.min.css"))
+            .pipe(gulp.dest("./dist/css"));
+});
+```
 
 ## Examples
 [Examples](http://milworm.github.io/gulp-css-gsub/demo/index.min.html)
