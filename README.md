@@ -1,6 +1,6 @@
 # A gulp module to minify CSS class names.
 
-![Demo](http://milworm.github.io/gulp-css-gsub/demo.gif)
+![Demo](./demo.gif)
 
 
 [![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5/gulp-css-gsub)](https://supporter.60devs.com/support/399936c021d5111d90001de85283a4b5/gulp-css-gsub)
@@ -12,7 +12,7 @@ Gulp-css-gsub is a gulp module that rewrites your js and css files in order to r
     npm install gulp-css-gsub --save-dev
 
 ## Usage
-![Example](/example.gif)
+![Example](./example.gif)
 
 ## Examples
 [Examples](http://milworm.github.io/gulp-css-gsub/demo/index.min.html)
