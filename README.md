@@ -1,9 +1,7 @@
 # A gulp module to minify CSS class names.
+[![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5/gulp-css-gsub)](https://supporter.60devs.com/support/399936c021d5111d90001de85283a4b5/gulp-css-gsub)
 
 ![Demo](./demo.gif)
-
-
-[![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5/gulp-css-gsub)](https://supporter.60devs.com/support/399936c021d5111d90001de85283a4b5/gulp-css-gsub)
 
 ## Introduction
 Gulp-css-gsub is a gulp module that rewrites your js and css files in order to reduce file size and obfuscate your code.
