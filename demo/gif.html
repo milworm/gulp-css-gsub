@@ -168,7 +168,7 @@ function Layout() {
         <pre>
             <code class="css">
 .d-container {
-    bacground: #fefefe;
+    background: #fefefe;
     display: flex;
     flex-direction: column;
 }
@@ -244,5 +244,21 @@ function Layout() {
             }, 1500);
         }, 5000);
     </script>
+
+    <!-- 
+const gulp = require("gulp");
+const cssGsub = require("gulp-css-gsub");
+
+gulp.task("css-gsub", () => {
+    return gulp.src("./dist/css/main.css")
+            .pipe(cssGsub({ 
+                jsIn: "./dist/js/app.js", 
+                jsOut: "./dist/js/app.min.js",
+                prefix: "d"
+            }))
+            .pipe(rename("main.min.css"))
+            .pipe(gulp.dest("./dist/css"));
+}); 
+-->
 </body>
 </html>
