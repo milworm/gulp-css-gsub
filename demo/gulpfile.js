@@ -1,5 +1,5 @@
 var gulp = require("gulp"),
-    cssGsub = require("../gulp-css-gsub/main.js"),
+    cssGsub = require("../gulp-css-gsub/lib/main.js"),
     rename = require("gulp-rename"),
     sass = require("gulp-sass"),
     watch = require("gulp-watch");
