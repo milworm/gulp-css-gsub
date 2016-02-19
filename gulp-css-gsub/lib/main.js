@@ -4,33 +4,30 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var through = require("through2"),
-    gutil = require("gulp-util"),
     Replacer = require("./replacer.js"),
     File = require("vinyl"),
     fs = require("fs");
 
 exports.default = function (config) {
     return through.obj(function (file, encoding, callback) {
-        var replacer, file;
+        config = Object.assign({
+            cssIn: file.path
+        }, config);
 
-        replacer = new Replacer({
-            cssIn: file.path,
-            jsIn: config.jsIn,
-            prefix: config.prefix
-        });
+        var replacer, cssCode, jsCode;
 
+        replacer = new Replacer(config);
         replacer.run();
 
-        var cssText = replacer.generateCss(),
-            jsText = replacer.generateJs();
+        cssCode = replacer.generateCss(), jsCode = replacer.generateJs();
 
-        fs.writeFileSync(config.jsOut, jsText);
+        fs.writeFileSync(config.jsOut, jsCode);
 
         file = new File({
             cwd: "/",
             base: "/",
             path: "/",
-            contents: new Buffer(cssText)
+            contents: new Buffer(cssCode)
         });
 
         callback(null, file);

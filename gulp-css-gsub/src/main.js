@@ -1,32 +1,31 @@
 var through = require("through2"),
-    gutil = require("gulp-util"),
     Replacer = require("./replacer.js"),
     File = require("vinyl"),
     fs = require("fs");
 
 export default (config) => {
     return through.obj((file, encoding, callback) => {
+        config = Object.assign({
+            cssIn: file.path
+        }, config);
+
         var replacer,
-            file;
+            cssCode,
+            jsCode;
 
-        replacer = new Replacer({
-            cssIn: file.path,
-            jsIn: config.jsIn,
-            prefix: config.prefix
-        });
-
+        replacer = new Replacer(config);
         replacer.run();
-        
-        var cssText = replacer.generateCss(),
-            jsText = replacer.generateJs();
 
-        fs.writeFileSync(config.jsOut, jsText);
+        cssCode = replacer.generateCss(),
+        jsCode = replacer.generateJs();
+
+        fs.writeFileSync(config.jsOut, jsCode);
 
         file = new File({
             cwd: "/",
             base: "/",
             path: "/",
-            contents: new Buffer(cssText)
+            contents: new Buffer(cssCode)
         });
 
         callback(null, file);

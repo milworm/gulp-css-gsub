@@ -58,7 +58,7 @@ gulp.task("css-gsub", function() {
                 .pipe(cssGsub({ 
                     jsIn: "./dist/js/app.js", 
                     jsOut: "./dist/js/app.min.js",
-                    prefix: "d"
+                    prefix: "d-"
                 }))
                 .pipe(rename("main.min.css"))
                 .pipe(gulp.dest("./dist/css"));

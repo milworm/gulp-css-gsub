@@ -18,19 +18,35 @@ var Replacer = function () {
 
     /**
      * @param {Object} config
-     * @param {String} config.prefix Used when css classes look like "{prefix}-profile"
-     * @param {RegExp} config.regexp Used when css classes use non-prefix declaration format.
-     * @param {Function} config.replace Function that will be called for each node from JS-AST, Here you can write your 
-     *                                  own logic to replace css-classes, that can't be replaced with prefix/regexp.
-     * @param {Boolean} replaceAll Should be true to rename all css classes including those classes that couldn't be 
-     *                             found in js-file.
+     * @param {String} config.prefix Used when CSS classes look like "{prefix}profile" "d-profile"
+     * @param {RegExp} config.regexp Used when CSS classes use non-prefix declaration format.
+     * @param {Function} config.replace 
+     * Function that will be called for each node from JS-AST. It's used when regexp is not enough and you need to 
+     * replace CSS classes based on some specific rules. 
+     * For example:
+     * @example
+     * In Sencha Touch / ExtJS, when you define a component:
+     *  Ext.define("MyComponent", {
+     *      extend: "Ext.Component",
+     *      config: {
+     *          baseCls: "d-my-component"
+     *      }
+     *  });
+     * ST/ExtJS will construct an additional CSS class "d-my-component-inner" using a rule #baseCls + '-inner', so 
+     * when you replace #baseCls you need to replace "d-my-component-inner" with a minimized version of #baseCls plus
+     * '-inner' string to avoid bugs. So it could look like this: 
+     * "d-my-component" -> "a0"
+     * "d-my-component-inner" -> "a0-inner"
+     *
+     * @param {Boolean} replaceAll Should be true to rename all CSS classes including those classes that couldn't be 
+     *                             found in js-file (probably unused).
      */
 
     function Replacer(config) {
         _classCallCheck(this, Replacer);
 
         this.config = Object.assign({
-            re: null,
+            regexp: null,
             prefix: "d-",
             replace: this.emptyFn,
             replaceAll: false
@@ -127,7 +143,7 @@ var Replacer = function () {
         }
 
         /**
-         * simply reads the content of css and js file.
+         * simply reads the content of CSS and js file.
          */
 
     }, {
@@ -138,7 +154,7 @@ var Replacer = function () {
         }
 
         /**
-         * initializes AST for both css and js.
+         * initializes AST for both CSS and JS.
          */
 
     }, {
@@ -149,23 +165,50 @@ var Replacer = function () {
         }
 
         /**
-         * starts parsing css file and extracts all css classes in required order.
+         * @return {RegExp} regexp to match CSS classes like: .d-user-profile
+         */
+
+    }, {
+        key: "generateCssClsRegExp",
+        value: function generateCssClsRegExp() {
+            var config = this.config;
+
+            if (config.prefix) return new RegExp("\\.(?:" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
+
+            return config.regexp;
+        }
+
+        /**
+         * @return {RegExp} regexp to match CSS classes like: <div class="d-user-profile"></div>
+         */
+
+    }, {
+        key: "generateJsClsRegExp",
+        value: function generateJsClsRegExp() {
+            var config = this.config;
+
+            if (config.prefix) return new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
+
+            return config.regexp;
+        }
+
+        /**
+         * parses CSS file to extract all CSS class names in required order.
          */
 
     }, {
         key: "parseCssRules",
         value: function parseCssRules() {
             var config = this.config,
+                regexp = this.generateCssClsRegExp(),
                 classes = [];
-
-            if (config.prefix) this.re = new RegExp("\\.(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");else this.re = config.re;
 
             this.rules = this.cssAst.stylesheet.rules;
 
             for (var i = 0, rule; rule = this.rules[i]; i++) {
                 if (rule.type != "rule") continue;
 
-                var selectors = rule.selectors.join(" ").match(this.re);
+                var selectors = rule.selectors.join(" ").match(regexp);
 
                 if (selectors) classes = classes.concat(selectors.join(" ").replace(/\./g, "").split(" "));
             }
@@ -176,50 +219,51 @@ var Replacer = function () {
                 return classes.indexOf(cls) == pos;
             });
         }
+
+        /**
+         * replaces CSS class names in JS AST
+         * @return {Replacer}
+         */
+
     }, {
         key: "replace",
         value: function replace() {
             var _this = this;
 
+            var config = this.config,
+                replace = config.replace;
+
             estraverse.traverse(this.jsAst, {
-                enter: function (node, parent) {
-                    this.config.replace.call(this, node, parent);
+                enter: function enter(node, parent) {
+                    if (replace.call(_this, node, parent) === false) return;
 
                     if (node.type != "Literal") return;
 
                     if (typeof node.value != "string") return;
 
-                    this.replaceItem(node);
-                }.bind(this)
-            });
-
-            if (!this.config.replaceAll) return this;
-
-            var replacements = this.replacements,
-                key = this.key;
-
-            this.classes.forEach(function (cls) {
-                if (!replacements.items[cls]) {
-                    replacements.items[cls] = key;
-                    key = _this.succ(key);
-                    replacements.count++;
+                    _this.replaceItem(node);
                 }
             });
 
+            if (config.replaceAll) this.replaceAll();
+
             return this;
         }
+
+        /**
+         * Replaces a CSS class name in string literal node with it's minimized version.
+         * @param {Object} node String literal node.
+         * @return {undefined}
+         */
+
     }, {
         key: "replaceItem",
         value: function replaceItem(node) {
             var value = node.value,
                 key = this.key,
-                config = this.config,
                 replacements = this.replacements,
-                re;
-
-            if (config.prefix) re = new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");else re = config.re;
-
-            var matches = value.match(re);
+                regexp = this.generateJsClsRegExp(),
+                matches = value.match(regexp);
 
             if (!matches) return;
 
@@ -238,14 +282,36 @@ var Replacer = function () {
         }
 
         /**
-         * @returns {String} a resulting CSS code with replacements based on CSS AST.
+         * peforms replacements for all unmatched CSS class names.
+         * @return {undefined}
+         */
+
+    }, {
+        key: "replaceAll",
+        value: function replaceAll() {
+            var _this2 = this;
+
+            var replacements = this.replacements,
+                key = this.key;
+
+            this.classes.forEach(function (cls) {
+                if (!replacements.items[cls]) {
+                    replacements.items[cls] = key;
+                    key = _this2.succ(key);
+                    replacements.count++;
+                }
+            });
+        }
+
+        /**
+         * @returns {String} Resulting CSS code with replacements based on CSS AST.
          */
 
     }, {
         key: "generateCss",
         value: function generateCss() {
             var replacements = this.replacements,
-                re = this.getCssItemRegExp();
+                regexp = this.generateCssClsRegExp();
 
             for (var i = 0, rule; rule = this.rules[i]; i++) {
                 if (rule.type != "rule") continue;
@@ -253,27 +319,21 @@ var Replacer = function () {
                 var newSelectors = [];
 
                 for (var j = 0, selector; selector = rule.selectors[j]; j++) {
-                    selector = selector.replace(re, function (a, b) {
-                        return "." + replacements.items[b];
+                    selector = selector.replace(regexp, function (a) {
+                        return "." + replacements.items[a.replace(".", "")];
                     });
 
-                    if (/undefined/.test(selector)) ; //console.log("undefined in " + selector + " === " + rule.selectors.join(" "))
-                    else newSelectors.push(selector);
+                    if (/undefined/.test(selector))
+                        // it can mean two things:
+                        // 1. there is a CSS rule which is not used in js file.
+                        // 2. it's a bug in gulp-css-gsub :)
+                        console.log("undefined in " + selector + " === " + rule.selectors.join(" "));else newSelectors.push(selector);
                 }
 
                 if (newSelectors.length == rule.selectors.length) rule.selectors = newSelectors;else rule.selectors = []; // remove rule, because of unused selector.
             }
 
             return css.stringify(this.cssAst);
-        }
-    }, {
-        key: "getCssItemRegExp",
-        value: function getCssItemRegExp() {
-            var config = this.config;
-
-            if (config.re) return config.re;
-
-            return new RegExp("\\.((?:" + config.prefix + "){1}[0-9a-zA-Z\\-_]+)", "g");
         }
 
         /**
