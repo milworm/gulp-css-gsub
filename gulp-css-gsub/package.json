@@ -6,8 +6,14 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
-  "author": "",
+  "author": "Ruslan Prytula <ruslan.prytula@gmail.com> (http://60devs.com)",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milworm/gulp-css-gsub/issues"
+  },
+  "keywords": [
+    "gulp-css-gsub"
+  ],
   "dependencies": {
     "css": "^2.2.1",
     "escodegen": "^1.8.0",
@@ -27,6 +33,8 @@
   "files": [
     "README.md",
     "LICENSE",
-    "lib/main.js"
-  ]
+    "lib/main.js",
+    "lib/replacer.js"
+  ],
+  "homepage": "http://milworm.github.io/gulp-css-gsub"
 }
