@@ -1,6 +1,6 @@
 {
   "name": "gulp-css-gsub",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "",
   "main": "/lib/main.js",
   "scripts": {
@@ -36,5 +36,9 @@
     "lib/main.js",
     "lib/replacer.js"
   ],
-  "homepage": "http://milworm.github.io/gulp-css-gsub"
+  "homepage": "http://milworm.github.io/gulp-css-gsub",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milworm/gulp-css-gsub.git"
+  }
 }
