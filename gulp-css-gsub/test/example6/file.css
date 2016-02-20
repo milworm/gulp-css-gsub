@@ -1,0 +1,35 @@
+.user {
+    background-color: #eee;
+    border: 1px solid #999;
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+.user::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 20px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.white {
+    background-color: #fff;
+}
+
+input[type="number"] {
+    border-bottom: 2px solid #333;
+}

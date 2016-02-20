@@ -1,0 +1,264 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Example</title>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,900,300italic,900italic">
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Lato;
+        }
+
+        h1 {
+            font-weight: 300;
+            margin-bottom: 0;
+        }
+
+        section {
+            height: 100%;
+            width: 100%;
+            padding: 10px 20px;
+        }
+
+        pre, code {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        body {
+            height: 500px;
+            width: 500px;
+        }
+
+        .section-1 h1,
+        .section-3 h1 {
+            font-size: 32px;
+        }
+
+        /* animations */
+        .section-1 {
+            display: none;
+            line-height: 500px;
+            text-align: center;
+            height: 100%;
+            opacity: 0;
+            animation: show-opacity 1s forwards, hide-opacity 1s 1s forwards, hide 1ms 2s forwards;
+        }
+
+        .section-2 {
+            display: none;
+            height: 100%;
+            opacity: 0;
+            animation: show-opacity 1s 2s forwards, hide-opacity 1s 4s forwards, hide 1ms 5s forwards;
+        }
+
+        .section-2 h1 {
+            font-size: 24px;
+        }
+
+        .section-3 {
+            display: none;
+            line-height: 500px;
+            text-align: center;
+            height: 100%;
+            opacity: 0;
+            animation: show-opacity 1s 5s forwards, hide-opacity 1s 6s forwards, hide 1ms 7s forwards;
+        }
+
+        .section-4 {
+            height: 100%;
+            opacity: 0;
+            animation: show-opacity 1s 7s forwards, hide-opacity 1s 11s forwards;
+            animation: show-opacity 0.5s 3s forwards, hide-opacity 0.5s 9s forwards;
+        }
+
+        .section-4 h1 {
+            font-size: 24px;
+        }
+
+        .css-cls {
+            max-width: 250px;
+            display: inline-block;
+            overflow: hidden;
+            line-height: 9px;
+        }
+
+        .hide-original .css-cls {
+            animation: hide-opacity 1.5s forwards, narrower 1.5s forwards;
+        }
+
+        .show-original .css-cls {
+            max-width: 16px;
+            animation: show-opacity 1.5s forwards;
+            line-height: 12px;
+            position: relative;
+            top: 2px;
+            color: #f5871f;
+            font-weight: bold;
+        }
+
+        .show-original .css.hljs .css-cls {
+            color: #8959a8;
+        }
+
+        @keyframes hide {
+            from {
+                height: 100%;
+            }
+
+            to {
+                height: 0;
+            }
+        }
+
+        @keyframes show-opacity {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes hide-opacity {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes narrower {
+            to {
+                max-width: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="section-1">
+        <h1>Before</h1>
+    </section>
+    <section class="section-2">
+        <h1>./js/main.js</h1>
+        <pre>
+            <code class="js">
+function Layout() {
+    this.html = [
+        '&lt;div class=&quot;d-container&quot;&gt;&lt;/div&gt;',
+            '&lt;div class=&quot;d-header-container&quot;&gt;&lt;/div&gt;'
+            '&lt;div class=&quot;d-content-container&quot;&gt;&lt;/div&gt;',
+        '&lt;/div&gt;'
+    ].join("");
+
+    document.body.innerHTML = this.html;
+}
+            </code>
+        </pre>
+
+        <h1>./css/main.css</h1>
+        <pre>
+            <code class="css">
+.d-container {
+    background: #fefefe;
+    display: flex;
+    flex-direction: column;
+}
+
+.d-header-container {
+    height: 40px;
+}
+
+.d-content-container {
+    flex: 1;
+}
+            </code>
+        </pre>
+    </section>
+    <section class="section-3">
+        <h1>After</h1>
+    </section>
+    <section class="section-4">
+        <h1>./js/main.js</h1>
+        <pre>
+            <code class="js">
+function Layout() {
+    this.html = [
+        '&lt;div class=&quot;<span class='css-cls'>d-container</span>&quot;&gt;&lt;/div&gt;',
+            '&lt;div class=&quot;<span class='css-cls'>d-header-container</span>&quot;&gt;&lt;/div&gt;'
+            '&lt;div class=&quot;<span class='css-cls'>d-content-container</span>&quot;&gt;&lt;/div&gt;',
+        '&lt;/div&gt;'
+    ].join("");
+
+    document.body.innerHTML = this.html;
+}
+            </code>
+        </pre>
+
+        <h1>./css/main.css</h1>
+        <pre>
+            <code class="css">
+.<span class="css-cls">d-container</span> {
+    background: #fefefe;
+    display: flex;
+    flex-direction: column;
+}
+
+.<span class="css-cls">d-header-container</span> {
+    height: 40px;
+}
+
+.<span class="css-cls">d-content-container</span> {
+    flex: 1;
+}
+            </code>
+        </pre>
+    </section>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/tomorrow.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script>
+        setTimeout(function() {
+            document.querySelector(".section-4").classList.add("hide-original");
+
+            setTimeout(function() {
+                var items = document.querySelectorAll(".css-cls"),
+                    replacements = ["a0", "a1", "a2", "a0", "a1", "a2"];
+
+                for(var i=0, item; item=items[i]; i++)
+                    item.innerHTML = replacements[i];
+
+                document.querySelector(".section-4").classList.remove("hide-original");
+                document.querySelector(".section-4").classList.add("show-original");
+            }, 1500);
+        }, 5000);
+    </script>
+
+    <!-- 
+const gulp = require("gulp");
+const cssGsub = require("gulp-css-gsub");
+
+gulp.task("css-gsub", () => {
+    return gulp.src("./dist/css/main.css")
+            .pipe(cssGsub({ 
+                jsIn: "./dist/js/app.js", 
+                jsOut: "./dist/js/app.min.js",
+                prefix: "d"
+            }))
+            .pipe(rename("main.min.css"))
+            .pipe(gulp.dest("./dist/css"));
+});
+-->
+</body>
+</html>

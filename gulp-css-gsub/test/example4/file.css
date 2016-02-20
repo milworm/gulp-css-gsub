@@ -8,3 +8,14 @@
     padding: 10px;
     background: gold;
 }
+
+.d-user-billing {
+    height: 100px;
+    width: 100px;
+}
+
+.d-user-billing-inner {
+    height: 50px;
+    padding: 10px;
+    background: gold;
+}

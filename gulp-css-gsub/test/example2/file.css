@@ -17,3 +17,10 @@
 .d-inner-item-4 {
     background: gold;
 }
+
+.d-inner-item-1,
+.d-inner-item-2,
+.d-inner-item-3,
+.d-inner-item-4 {
+    display: inline-block;
+}

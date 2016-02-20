@@ -1,5 +1,5 @@
 var gulp = require("gulp"),
-    cssGsub = require("../gulp-css-gsub/main.js"),
+    cssGsub = require("../gulp-css-gsub/lib/main.js"),
     rename = require("gulp-rename"),
     sass = require("gulp-sass"),
     watch = require("gulp-watch");
@@ -58,7 +58,7 @@ gulp.task("css-gsub", function() {
                 .pipe(cssGsub({ 
                     jsIn: "./dist/js/app.js", 
                     jsOut: "./dist/js/app.min.js",
-                    prefix: "d"
+                    prefix: "d-"
                 }))
                 .pipe(rename("main.min.css"))
                 .pipe(gulp.dest("./dist/css"));
