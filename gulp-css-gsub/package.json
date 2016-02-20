@@ -31,8 +31,8 @@
     "vinyl": "^1.1.1"
   },
   "files": [
-    "../README.md",
-    "../LICENSE",
+    "README.md",
+    "LICENSE",
     "lib/main.js",
     "lib/replacer.js"
   ],
