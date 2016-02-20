@@ -47,7 +47,7 @@ var Replacer = function () {
 
         this.config = Object.assign({
             regexp: null,
-            prefix: "d-",
+            prefix: null,
             replace: this.emptyFn,
             replaceAll: false
         }, config);
@@ -175,7 +175,9 @@ var Replacer = function () {
 
             if (config.prefix) return new RegExp("\\.(?:" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
 
-            return config.regexp;
+            if (config.regexp) return new RegExp(config.regexp.toString().replace("\/", "\/."));
+
+            return new RegExp("\\.[0-9a-zA-Z\\-_]+", "g");
         }
 
         /**
@@ -189,7 +191,9 @@ var Replacer = function () {
 
             if (config.prefix) return new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
 
-            return config.regexp;
+            if (config.regexp) return config.regexp;
+
+            return new RegExp(this.classes.join("|"), "g");
         }
 
         /**
@@ -264,6 +268,8 @@ var Replacer = function () {
                 replacements = this.replacements,
                 regexp = this.generateJsClsRegExp(),
                 matches = value.match(regexp);
+
+            // console.log(regexp);
 
             if (!matches) return;
 

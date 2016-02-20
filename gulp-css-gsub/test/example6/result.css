@@ -1,0 +1,35 @@
+.a2 {
+  background-color: #eee;
+  border: 1px solid #999;
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.a2::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 20px;
+}
+
+.a1 {
+  float: left;
+}
+
+.a3 {
+  float: right;
+}
+
+.a4 {
+  position: fixed;
+}
+
+.a0 {
+  background-color: #fff;
+}
+
+input[type="number"] {
+  border-bottom: 2px solid #333;
+}

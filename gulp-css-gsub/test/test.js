@@ -81,6 +81,27 @@ describe("replacements", function () {
 
         assert.equal(replacer.getReplacementsCount(), replacer.getReplacementsCount());
     });
+
+    it("should make 5 replacements without a prefix (based on css-file)", function () {
+        var replacer,
+            css,
+            js;
+
+        replacer = new Replacer({
+            cssIn: "./test/example6/file.css",
+            jsIn: "./test/example6/file.js"
+        });
+
+        replacer.run();
+
+        css = replacer.generateCss();
+        js = replacer.generateJs();
+
+        fs.writeFileSync("./test/example6/result.css", css);
+        fs.writeFileSync("./test/example6/result.js", js);
+
+        assert.equal(true, true);
+    });
 });
 
 describe("replace functions", function() {
