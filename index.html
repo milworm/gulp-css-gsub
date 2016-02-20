@@ -27,25 +27,25 @@
 <h3>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
 
-<p><code>npm install gulp-css-gsub --save-dev</code></p>
+<pre><code>npm install gulp-css-gsub --save-dev`
+</code></pre>
 
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
 
-<p>`const gulp = require("gulp");
-const cssGsub = require("gulp-css-gsub");</p>
+<pre><code>const gulp = require("gulp");
+const cssGsub = require("gulp-css-gsub");
 
-<p>gulp.task("css-gsub", () =&gt; {
+gulp.task("css-gsub", () =&gt; {
     return gulp.src("./dist/css/main.css")
             .pipe(cssGsub({ 
                 jsIn: "./dist/js/app.js", 
-                jsOut: "./dist/js/app.min.js",
-                prefix: "d"
+                jsOut: "./dist/js/app.min.js"
             }))
             .pipe(rename("main.min.css"))
             .pipe(gulp.dest("./dist/css"));
 });
-`</p>
+</code></pre>
 
 <h3>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
