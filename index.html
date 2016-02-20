@@ -33,19 +33,18 @@
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
 
-<pre><code>const gulp = require("gulp");
-const cssGsub = require("gulp-css-gsub");
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">gulp</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>gulp<span class="pl-pds">"</span></span>);
+<span class="pl-k">const</span> <span class="pl-c1">cssGsub</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>gulp-css-gsub<span class="pl-pds">"</span></span>);
 
-gulp.task("css-gsub", () =&gt; {
-    return gulp.src("./dist/css/main.css")
-            .pipe(cssGsub({ 
-                jsIn: "./dist/js/app.js", 
-                jsOut: "./dist/js/app.min.js"
+<span class="pl-smi">gulp</span>.<span class="pl-en">task</span>(<span class="pl-s"><span class="pl-pds">"</span>css-gsub<span class="pl-pds">"</span></span>, () <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">return</span> <span class="pl-smi">gulp</span>.<span class="pl-en">src</span>(<span class="pl-s"><span class="pl-pds">"</span>./dist/css/main.css<span class="pl-pds">"</span></span>)
+            .<span class="pl-en">pipe</span>(<span class="pl-en">cssGsub</span>({ 
+                jsIn<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>./dist/js/app.js<span class="pl-pds">"</span></span>, 
+                jsOut<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>./dist/js/app.min.js<span class="pl-pds">"</span></span>
             }))
-            .pipe(rename("main.min.css"))
-            .pipe(gulp.dest("./dist/css"));
-});
-</code></pre>
+            .<span class="pl-en">pipe</span>(<span class="pl-en">rename</span>(<span class="pl-s"><span class="pl-pds">"</span>main.min.css<span class="pl-pds">"</span></span>))
+            .<span class="pl-en">pipe</span>(<span class="pl-smi">gulp</span>.<span class="pl-en">dest</span>(<span class="pl-s"><span class="pl-pds">"</span>./dist/css<span class="pl-pds">"</span></span>));
+});</pre></div>
 
 <h3>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
