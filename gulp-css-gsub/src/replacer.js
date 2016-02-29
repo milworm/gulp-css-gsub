@@ -115,7 +115,7 @@ export default class Replacer {
             }
         }
 
-        if(this.DANGER_MIN_NAMES.indexOf(result))
+        if(this.DANGER_MIN_NAMES.indexOf(result) > -1)
             return this.succ(result);
 
         return result;

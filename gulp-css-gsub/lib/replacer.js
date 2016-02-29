@@ -126,7 +126,7 @@ var Replacer = (function () {
                 }
             }
 
-            if (this.DANGER_MIN_NAMES.indexOf(result)) return this.succ(result);
+            if (this.DANGER_MIN_NAMES.indexOf(result) > -1) return this.succ(result);
 
             return result;
         }
