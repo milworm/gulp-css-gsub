@@ -44,6 +44,13 @@ export default class Replacer {
             count: 0,
             items: {}
         };
+
+        this.DANGER_MIN_NAMES = [
+            "s0|s1|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|s12|",
+            "m0|m1|m2|m3|m4|m5|m6|m7|m8|m9|m10|m11|m12|",
+            "l0|l1|l3|l3|l4|l5|l6|l7|l8|l9|l10|l11|l12|",
+            "fa"
+        ].join("").split("|")
     }
     
     /**
@@ -108,6 +115,9 @@ export default class Replacer {
             }
         }
 
+        if(this.DANGER_MIN_NAMES.indexOf(result))
+            return this.succ(result);
+
         return result;
     }
     
@@ -159,7 +169,7 @@ export default class Replacer {
         var config = this.config;
 
         if(config.prefix)
-            return new RegExp("(\b" + config.prefix + "[0-9a-zA-Z\-_]+)", "g");
+            return new RegExp("(\\b" + config.prefix + "[0-9a-zA-Z\-_]+)", "g");
         
         if(config.regexp)
             return config.regexp;
