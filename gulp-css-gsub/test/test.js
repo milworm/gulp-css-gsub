@@ -1,5 +1,5 @@
 var assert = require("assert"),
-    Replacer = require("../lib/replacer.js").default,
+    Replacer = require("../lib/replacer.js"),
     fs = require("fs");
 
 describe("replacements", function () {
