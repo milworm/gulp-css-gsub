@@ -182,7 +182,7 @@ var Replacer = (function () {
         value: function generateJsClsRegExp() {
             var config = this.config;
 
-            if (config.prefix) return new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
+            if (config.prefix) return new RegExp("(\b" + config.prefix + "[0-9a-zA-Z\-_]+)", "g");
 
             if (config.regexp) return config.regexp;
 
@@ -259,8 +259,6 @@ var Replacer = (function () {
                 regexp = this.generateJsClsRegExp(),
                 matches = value.match(regexp);
 
-            // console.log(regexp);
-
             if (!matches) return;
 
             for (var i = 0, match; match = matches[i]; i++) {
@@ -268,10 +266,12 @@ var Replacer = (function () {
                     replacements.items[match] = key;
                     key = this.succ(key);
                 }
-
-                value = value.replace(match, replacements.items[match]);
-                replacements.count++;
             }
+
+            value = value.replace(regexp, function (a) {
+                replacements.count++;
+                return replacements.items[a];
+            });
 
             node.value = value;
             this.key = key;

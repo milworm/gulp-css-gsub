@@ -159,7 +159,7 @@ export default class Replacer {
         var config = this.config;
 
         if(config.prefix)
-            return new RegExp("(" + config.prefix + "){1}[0-9a-zA-Z\\-_]+", "g");
+            return new RegExp("(\b" + config.prefix + "[0-9a-zA-Z\-_]+)", "g");
         
         if(config.regexp)
             return config.regexp;
@@ -235,8 +235,6 @@ export default class Replacer {
             regexp = this.generateJsClsRegExp(),
             matches = value.match(regexp);
 
-        // console.log(regexp);
-
         if(! matches)
             return ;
 
@@ -245,10 +243,12 @@ export default class Replacer {
                 replacements.items[match] = key;
                 key = this.succ(key);
             }
-
-            value = value.replace(match, replacements.items[match]);
-            replacements.count ++;
         }
+
+        value = value.replace(regexp, function(a) {
+            replacements.count ++;
+            return replacements.items[a];
+        });
 
         node.value = value;
         this.key = key;
