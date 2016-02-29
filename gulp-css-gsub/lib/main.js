@@ -8,7 +8,7 @@ var through = require("through2"),
     File = require("vinyl"),
     fs = require("fs");
 
-exports.default = function (config) {
+exports["default"] = function (config) {
     return through.obj(function (file, encoding, callback) {
         config = Object.assign({
             cssIn: file.path
@@ -33,3 +33,5 @@ exports.default = function (config) {
         callback(null, file);
     });
 };
+
+module.exports = exports["default"];

@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14,7 +14,7 @@ var esprima = require("esprima"),
     escodegen = require("escodegen"),
     fs = require("fs");
 
-var Replacer = function () {
+var Replacer = (function () {
 
     /**
      * @param {Object} config
@@ -63,7 +63,6 @@ var Replacer = function () {
      * a reusable empty function
      */
 
-
     _createClass(Replacer, [{
         key: "emptyFn",
         value: function emptyFn() {}
@@ -72,7 +71,6 @@ var Replacer = function () {
          * @param {String}
          * @return {String}
          */
-
     }, {
         key: "succ",
         value: function succ(input) {
@@ -132,7 +130,6 @@ var Replacer = function () {
         /**
          * an entry point.
          */
-
     }, {
         key: "run",
         value: function run() {
@@ -145,7 +142,6 @@ var Replacer = function () {
         /**
          * simply reads the content of CSS and js file.
          */
-
     }, {
         key: "openFiles",
         value: function openFiles() {
@@ -156,7 +152,6 @@ var Replacer = function () {
         /**
          * initializes AST for both CSS and JS.
          */
-
     }, {
         key: "initFilesAst",
         value: function initFilesAst() {
@@ -167,7 +162,6 @@ var Replacer = function () {
         /**
          * @return {RegExp} regexp to match CSS classes like: .d-user-profile
          */
-
     }, {
         key: "generateCssClsRegExp",
         value: function generateCssClsRegExp() {
@@ -183,7 +177,6 @@ var Replacer = function () {
         /**
          * @return {RegExp} regexp to match CSS classes like: <div class="d-user-profile"></div>
          */
-
     }, {
         key: "generateJsClsRegExp",
         value: function generateJsClsRegExp() {
@@ -199,7 +192,6 @@ var Replacer = function () {
         /**
          * parses CSS file to extract all CSS class names in required order.
          */
-
     }, {
         key: "parseCssRules",
         value: function parseCssRules() {
@@ -228,7 +220,6 @@ var Replacer = function () {
          * replaces CSS class names in JS AST
          * @return {Replacer}
          */
-
     }, {
         key: "replace",
         value: function replace() {
@@ -259,7 +250,6 @@ var Replacer = function () {
          * @param {Object} node String literal node.
          * @return {undefined}
          */
-
     }, {
         key: "replaceItem",
         value: function replaceItem(node) {
@@ -291,7 +281,6 @@ var Replacer = function () {
          * peforms replacements for all unmatched CSS class names.
          * @return {undefined}
          */
-
     }, {
         key: "replaceAll",
         value: function replaceAll() {
@@ -312,7 +301,6 @@ var Replacer = function () {
         /**
          * @returns {String} Resulting CSS code with replacements based on CSS AST.
          */
-
     }, {
         key: "generateCss",
         value: function generateCss() {
@@ -345,7 +333,6 @@ var Replacer = function () {
         /**
          * @returns {String} a resulting JS code with replacements based on JS AST.
          */
-
     }, {
         key: "generateJs",
         value: function generateJs() {
@@ -355,7 +342,6 @@ var Replacer = function () {
         /**
          * @return {Number} number of replacments.
          */
-
     }, {
         key: "getReplacementsCount",
         value: function getReplacementsCount() {
@@ -364,6 +350,7 @@ var Replacer = function () {
     }]);
 
     return Replacer;
-}();
+})();
 
-exports.default = Replacer;
+exports["default"] = Replacer;
+module.exports = exports["default"];

@@ -1,10 +1,12 @@
 {
   "name": "gulp-css-gsub",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "",
   "main": "./lib/main.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile"
   },
   "author": "Ruslan Prytula <ruslan.prytula@gmail.com> (http://60devs.com)",
   "license": "ISC",
