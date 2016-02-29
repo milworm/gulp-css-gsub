@@ -2,7 +2,7 @@
 
 ![Demo](https://raw.githubusercontent.com/milworm/gulp-css-gsub/master/demo.gif)
 
-[![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5/gulp-css-gsub)](https://supporter.60devs.com/support/399936c021d5111d90001de85283a4b5/gulp-css-gsub)
+[![Support](https://supporter.60devs.com/api/b/399936c021d5111d90001de85283a4b5)](https://supporter.60devs.com/give/399936c021d5111d90001de85283a4b5)
 
 ## Introduction
 Gulp-css-gsub is a gulp module that rewrites your js and css files in order to reduce file size and obfuscate your code.
