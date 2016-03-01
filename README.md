@@ -20,6 +20,7 @@ Gulp-css-gsub is a gulp module that rewrites your js and css files in order to r
 ```javascript
 const gulp = require("gulp");
 const cssGsub = require("gulp-css-gsub");
+const rename = require("gulp-rename");
 
 gulp.task("css-gsub", () => {
     return gulp.src("./dist/css/main.css")
