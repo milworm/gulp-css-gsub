@@ -7,6 +7,12 @@
 ## Introduction
 Gulp-css-gsub is a gulp module that rewrites your js and css files in order to reduce file size and obfuscate your code.
 
+## Benefits
+- smaller size of your CSS file (upto 40% off)
+- protection the code from stealing
+- allows you find unused CSS rules it your app
+- less time on CSS parsing in the beginning (to be validated)
+
 ## Installation
     npm install gulp-css-gsub --save-dev
 
